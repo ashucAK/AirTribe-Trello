@@ -19,19 +19,38 @@ const router = useRouter()
 
 const editNameState = ref(false)
 const newTaskName = ref('')
+const newTaskDescription = ref('')
 const showTaskModal = ref(false)
 
 function addTask() {
+  if (!newTaskName.value.trim()) {
+
+    alert('Please enter a task name.')
+    return
+  }
+
+ 
+  const description = prompt('Enter task description:')
+  if (description === null) {
+
+    return
+  }
+
   boardStore.addTask({
     taskName: newTaskName.value,
+    taskDescription: description, 
     columnIndex: props.columnIndex
   })
   newTaskName.value = ''
-  showTaskModal.value = false // Close the modal after adding the task
+  showTaskModal.value = false 
 }
 
 function editColumn() {
   editNameState.value = !editNameState.value
+}
+
+function deleteColumn() {
+  boardStore.deleteColumn(props.columnIndex)
 }
 
 function dropItem(event, { toColumnIndex, toTaskIndex }) {
@@ -88,10 +107,11 @@ function pickupTask(event, { fromColumnIndex, fromTaskIndex }) {
       <div>
         <UInput v-if="editNameState" type="text" v-model="column.name" />
         <h2 v-else>{{ column.name }}</h2>
-        <p>{{ column.tasks.length }} tasks</p>
+        <p>[{{ column.tasks.length }} Tasks]</p>
       </div>
       <div>
-        <UButton class="bg-blue-500 hover:bg-blue-600 text-white" @click="editColumn">Edit</UButton>
+        <UButton class="bg-white-500 hover:bg-blue-600 text-white" @click="editColumn">Edit</UButton>
+        <UButton class="bg-white-500 hover:bg-red-600 text-white" @click="deleteColumn"> Delete </UButton>
       </div>
     </div>
     <ul>
@@ -120,10 +140,11 @@ function pickupTask(event, { fromColumnIndex, fromTaskIndex }) {
     </ul>
     <!-- Task creation modal -->
     <UModal v-model="showTaskModal" @close="showTaskModal = false">
-      <div>
-        <h3>Create New Task</h3>
-        <UInput v-model="newTaskName" placeholder="Task name" />
-        <UButton @click="addTask">Add Task</UButton>
+      <div class="new-task p-4 bg-white rounded shadow-md">
+        <h3 class="text-lg font-semibold mb-2">Create New Task</h3>
+        <UInput v-model="newTaskName" placeholder="Task name" class="mb-2" />
+        <UInput v-model="newTaskDescription" placeholder="Task description" class="mb-4" />
+        <UButton @click="addTask" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Add Task</UButton>
       </div>
     </UModal>
     <!-- New Task Button -->

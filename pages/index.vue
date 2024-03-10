@@ -30,18 +30,20 @@ function closeModal() {
         :column="column"
         :columnIndex="columnIndex"
       />
-      <UContainer class="column">
-        <UInput
-          v-model="newColumnName"
-          type="text"
-          placeholder="Create new column"
-          icon="i-heroicons-plus-circle-solid"
-          @keyup.enter="addColumn"
-        />
-      </UContainer>
     </main>
     <div v-show="isModalOpen" class="task-bg" @click.self="closeModal">
       <NuxtPage :key="route.fullPath" />
     </div>
   </div>
+<div>
+  <UContainer class="column fixed bottom-0 left-0 right-0 w-40 px-2 py-1 rounded-sm border border-gray-300">
+    <UInput
+      v-model="newColumnName"
+      type="text"
+      placeholder="Create new column"
+      icon="i-heroicons-plus-circle-solid"
+      @keyup.enter="addColumn"
+    />
+  </UContainer>
+</div>
 </template>

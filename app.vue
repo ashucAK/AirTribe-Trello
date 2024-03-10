@@ -8,7 +8,7 @@
     </div>
     <button></button>
   </header>
-  <Html class="bg-blue-500">
+  <Html>
     <div>
       <NuxtPage />
     </div>
